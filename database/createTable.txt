@@ -1,0 +1,44 @@
+psql -h 192.168.100.253 -d tydb37
+
+
+TABLE NAME
+
+	1. Patients
+	2. Doctors
+	3. Diagnostic_Labs
+	4. Tests
+	5. Test_Provider
+	6. Doctor_Appointments
+	7. Diagnostic_Tests
+	8. Consults
+	9. Answers
+	10. Patient_Reports
+
+create table Patients( patient_id int PRIMARY KEY, name varchar(255) NOT NULL , birthdate date, gender varchar(10), bloodgroup varchar(5),email varchar(30),password varchar(20), street varchar(20) , area varchar(20) ,city varchar(20) , state varchar(20),review float );
+
+
+create table Doctors( doctor_id int PRIMARY KEY , name varchar(255) NOT NULL , gender varchar(10) , qualification varchar(255) NOT NULL, specialization varchar (40) NOT NULL , hospital_name varchar(40) ,email varchar(30),password varchar(20), street varchar(20)  , area varchar(20) , city varchar(20) , state varchar(20),review float );
+
+
+
+create table Diagnostic_Labs( lab_id int PRIMARY KEY , name varchar(255) NOT NULL ,email varchar(30),password varchar(20), street varchar(20)  , area varchar(20) , city varchar(20) , state varchar(20),review float );
+
+
+
+create table Tests( test_id int PRIMARY KEY , test_name varchar(50));
+
+create table Test_Provider( no int PRIMARY KEY, test_id int REFERENCES Tests ON DELETE CASCADE ON UPDATE CASCADE ,lab_id int REFERENCES Diagnostic_labs ON DELETE CASCADE ON UPDATE CASCADE );
+
+
+
+create table Doctor_Appointments( appointment_no int PRIMARY KEY ,appointment_date date NOT NULL, appointment_time time NOT NULL, feedback text , patient_id int REFERENCES Patients ON DELETE CASCADE ON UPDATE CASCADE , doctor_id int REFERENCES Doctors ON DELETE CASCADE ON UPDATE CASCADE );
+
+create table Diagnostic_Tests( test_no int PRIMARY KEY ,appointment_date date NOT NULL, appointment_time time NOT NULL, feedback text , patient_id int REFERENCES Patients ON DELETE CASCADE ON UPDATE CASCADE , lab_id int REFERENCES Diagnostic_labs ON DELETE CASCADE ON UPDATE CASCADE );
+
+create table Consults(consult_no int PRIMARY KEY, problem_type varchar(50),title text , description text, patient_id int REFERENCES Patients ON DELETE CASCADE ON UPDATE CASCADE );
+
+create table Answers(answer_no int PRIMARY KEY, answer text NOT NULL, consult_id int REFERENCES Consults ON DELETE CASCADE ON UPDATE CASCADE , doctor_id int REFERENCES Doctors ON DELETE CASCADE ON UPDATE CASCADE ,review varchar(20));
+
+create table Patient_Reports( report_no int PRIMARY KEY ,report_name varchar(40), report text , patient_id int REFERENCES Patients ON DELETE CASCADE ON UPDATE CASCADE );
+
+
